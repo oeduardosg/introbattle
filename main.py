@@ -1,5 +1,6 @@
 import pygame
 from entities import *
+from menu import *
 
 pygame.init()
 
@@ -11,9 +12,9 @@ window = pygame.display.set_mode((WIDTH, LENGHT))
 pygame.display.set_caption("Don't Starve by Them")
 
 #Adjusting the background size
-menu = pygame.image.load("images/menu_backgrounds/background_1.webp")
-h = menu.get_width()
-menu = pygame.transform.scale_by(menu, WIDTH/h)
+background_menu = pygame.image.load("images/menu_backgrounds/background_1.webp").convert()
+h = background_menu.get_width()
+background_menu = pygame.transform.scale_by(background_menu, WIDTH/h)
 
 #Creating the main groups
 characters = pygame.sprite.Group()
@@ -29,15 +30,7 @@ clock = pygame.time.Clock()
 run = True
 
 while run:
-    window.blit(menu, (0,0))
-    clock.tick(fps)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    
-
-    pygame.display.flip()
+    run = menu(window, background_menu, clock, fps)
 
 pygame.quit()
