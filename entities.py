@@ -78,7 +78,7 @@ class Paladin(Entity):
         else:
             enemy.receive_atk(self.get_atk())
 
-#Wortox
+#WX-78
 class Rogue(Entity):
     """
     Wortox special hability steals an enemy hp based on his attack

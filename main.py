@@ -12,12 +12,14 @@ window = pygame.display.set_mode((WIDTH, LENGHT))
 pygame.display.set_caption("Don't Starve by Them")
 
 #Adjusting the menu background size
-background_menu = pygame.image.load("images/backgrounds/background_1.webp").convert()
+background_menu = pygame.image.load("images/backgrounds/background_1.webp")
 h = background_menu.get_width()
 background_menu = pygame.transform.scale_by(background_menu, WIDTH/h)
 
 #Adjusting the selection background
-background_selection = pygame.image.load("images/backgrounds/background_1.webp")    #ADICIONAR!!!!!!!!!!!!!!!!!!!!!
+background_selection = pygame.image.load("images/backgrounds/selection_1.png")
+h = background_selection.get_height()
+background_selection = pygame.transform.scale_by(background_selection, LENGHT/h)
 
 #Creating the main groups
 characters = pygame.sprite.Group()
