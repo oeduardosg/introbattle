@@ -87,4 +87,4 @@ def selection(characters, window, background_selection, clock, fps):
                 if event.key == pygame.K_z:
                     characters.add(Rogue())
 
-    return False
+    return True

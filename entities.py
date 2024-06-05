@@ -10,20 +10,23 @@ class Entity(pygame.sprite.Sprite):
     atk : Points of damage
     dfn : Defense points
     spd : Speed points
-
-    special_cooldown: Cooldown to reuse a special hability
     x : x position
     y : y position
     image: Visual representation
+
+    special_cooldown: Cooldown to reuse a special hability
     """
 
-    def __init__(self, hp, atk, dfn, spd):
+    def __init__(self, hp, atk, dfn, spd, image):
         super().__init__()
         self.hp_max = hp
         self.hp_current = hp
         self.atk = atk
         self.dfn = dfn
         self.spd = spd
+        self.x = 0
+        self.y = 0
+        self.image = image
 
     #Getters
 
@@ -50,6 +53,19 @@ class Entity(pygame.sprite.Sprite):
     def die(self):
         self.hp_current = 0
 
+    def x(self, x):
+        self.x = x
+
+    def y(self, y):
+        self.y = y
+
+    def x_y(self, x, y):
+        self.x = x
+        self.y = y
+
+    def image(self, image):
+        self.image = image
+
     #Others
 
     def restore_hp(self, restore):
@@ -61,6 +77,9 @@ class Entity(pygame.sprite.Sprite):
     def attack(self, enemy):
         enemy.receive_atk(self.get_atk())
 
+    def draw(self, window):
+        window.blit(self.image, [self.x, self.y])
+
 
 #Wigfrid
 class Paladin(Entity):
@@ -69,7 +88,8 @@ class Paladin(Entity):
     """
 
     def __init__(self):
-        super().__init__(150, 20, 50, 25)
+        image = pygame.image.load(f"images/entities/wigfrid/wigfrid_base.webp")
+        super().__init__(150, 20, 50, 25, image)
         self.counter = 0
 
     def attack(self, enemy):
@@ -81,11 +101,12 @@ class Paladin(Entity):
 #WX-78
 class Rogue(Entity):
     """
-    Wortox special hability steals an enemy hp based on his attack
+    WX-78 has a special hability to eat gears dropped by its enemies and become restore health
     """
 
     def __init__(self):
-        super().__init__(125, 25, 25, 50)
+        image = pygame.image.load(f"images/entities/wx78/wx78_base.webp")
+        super().__init__(125, 25, 25, 50, image)
 
     def special(self, enemy):
         if(enemy.get_current_hp() < self.get_atk()):
@@ -102,7 +123,8 @@ class Cleric(Entity):
     """
 
     def __init__(self):
-        super().__init__(125, 10, 35, 25)
+        image = pygame.image.load(f"images/entities/wormwood/wormwood_base.webp")
+        super().__init__(125, 10, 35, 25, image)
 
     def special(self, ally):
         ally.restore_hp(30)
@@ -114,7 +136,8 @@ class Wizard(Entity):
     """
 
     def __init__(self):
-        super().__init__(100, 15, 25, 35)
+        image = pygame.image.load(f"images/entities/wickerbottom/wickerbottom_base.webp")
+        super().__init__(100, 15, 25, 35, image)
 
     def special(self, enemies):
         for enemy in enemies:
@@ -127,7 +150,8 @@ class Hunter(Entity):
     """
 
     def __init__(self):
-        super().__init__(115, 20, 15, 50)
+        image = pygame.image.load(f"images/entities/willow/willow_base.webp")
+        super().__init__(115, 20, 15, 50, image)
 
     def special(self, enemie):
         enemie #on fire
@@ -138,7 +162,8 @@ class Spider(Entity):
     """
 
     def __init__(self):
-        super().__init__(50, 15, 10, 30)
+        image = pygame.image.load(f"images/entities/spider/spider_base.webp")
+        super().__init__(50, 15, 10, 30, image)
 
     def special(self, enemy):
         enemy
@@ -150,7 +175,8 @@ class Necromancer(Entity):
     """
 
     def __init__(self):
-        super().__init__(250, 20, 20, 30)
+        image = pygame.image.load(f"images/entities/maxwell/maxwell_base.webp")
+        super().__init__(250, 20, 20, 30, image)
 
     def special(self, allies):
         if(len(allies.sprites()) == 1):

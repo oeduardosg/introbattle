@@ -1,6 +1,7 @@
 import pygame
 from entities import *
 from menu import *
+from levels import *
 
 pygame.init()
 
@@ -39,7 +40,7 @@ while run:
     run = menu(window, background_menu, clock, fps)
     if run == 1:
         run = selection(characters, window, background_selection, clock, fps)
-        #if run:
-            #run = level(characters, enemies, window, background_level, clock, fps)
+        if run:
+            run = level_1(characters, enemies, window, background_selection, clock, fps)
 
 pygame.quit()
