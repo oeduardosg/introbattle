@@ -6,9 +6,9 @@ LENGHT = 768
 
 def level_1(characters, enemies, window, background_level, clock, fps):
     characters_list = characters.sprites()
-    characters_list[0].x_y(50, 50)
-    characters_list[1].x_y(100, 100)
-    characters_list[2].x_y(50, 150)
+    characters_list[0].x_y(100, 150)
+    characters_list[1].x_y(200, 300)
+    characters_list[2].x_y(100, 450)
 
     enemies_list = enemies.sprites()
     enemies_list[0].x_y(500, 75)

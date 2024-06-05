@@ -105,7 +105,7 @@ class Rogue(Entity):
     """
 
     def __init__(self):
-        image = pygame.image.load(f"images/entities/wx78/wx78_base.webp")
+        image = pygame.image.load(f"images/entities/wx78/wx78_base.png")
         super().__init__(125, 25, 25, 50, image)
 
     def special(self, enemy):
