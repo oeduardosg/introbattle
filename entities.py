@@ -85,13 +85,13 @@ class Entity(pygame.sprite.Sprite):
 
 
 #Wigfrid
-class Paladin(Entity):
+class Wigfrid(Entity):
     """
     Wigfrid can instantly kill her enemies if their current hp is under 20% of the max hp.
     """
 
     def __init__(self):
-        image = pygame.image.load(f"images/entities/wigfrid/wigfrid_base.webp")
+        image = pygame.image.load(f"images/entities/wigfrid/wigfrid_base.png")
         image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(150, 20, 50, 25, image)
         self.counter = 0
@@ -103,7 +103,7 @@ class Paladin(Entity):
             enemy.receive_atk(self.get_atk())
 
 #WX-78
-class Rogue(Entity):
+class WX78(Entity):
     """
     WX-78 has a special hability to eat gears dropped by its enemies and become restore health
     """
@@ -122,21 +122,21 @@ class Rogue(Entity):
             self.attack(enemy)
 
 #Wormwood
-class Cleric(Entity):
+class Wormwood(Entity):
     """
     Wormood loves all of his friends and cures them
     """
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/wormwood/wormwood_base.webp")
-        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE + 0.1)
         super().__init__(125, 10, 35, 25, image)
 
     def special(self, ally):
         ally.restore_hp(30)
 
 #Wickerbottom
-class Wizard(Entity):
+class Wickerbottom(Entity):
     """
     Wickerbottom is a powerful librarian who can summon lightning bolts!
     """
@@ -151,13 +151,13 @@ class Wizard(Entity):
             enemy.receive_atk(self.get_atk())
 
 #Willow
-class Hunter(Entity):
+class Willow(Entity):
     """
     Willow just sets fire to everything and *everyone*
     """
 
     def __init__(self):
-        image = pygame.image.load(f"images/entities/willow/willow_base.webp")
+        image = pygame.image.load(f"images/entities/willow/willow_base.png")
         image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(115, 20, 15, 50, image)
 
@@ -179,7 +179,7 @@ class Spider(Entity):
         #Não consegue jogar por um turno
 
 #Maxwell
-class Necromancer(Entity):
+class Maxwell(Entity):
     """
     """
 

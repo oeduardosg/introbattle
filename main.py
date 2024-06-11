@@ -25,13 +25,13 @@ background_selection = pygame.transform.scale_by(background_selection, LENGHT/h)
 #Adjusting the level 1 background
 background_level = pygame.image.load("images/backgrounds/level_1.jpg")
 h = background_level.get_width()
-background_level = pygame.transform.scale_by(background_level, WIDTH/h)
+#background_level = pygame.transform.scale_by(background_level, WIDTH/h)
 
 #Creating the main groups
 characters = pygame.sprite.Group()
 
 enemies = pygame.sprite.Group()
-enemies.add(Necromancer())
+enemies.add(Maxwell())
 enemies.add(Spider())
 
 #Setting the game tick

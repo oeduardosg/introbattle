@@ -17,6 +17,14 @@ def level_1(characters, enemies, window, background_level, clock, fps):
     enemies_list[0].x_y(650, 160)
     enemies_list[1].x_y(670, 460)
 
+    turn = []
+
+    for character in characters_list:
+        turn.append(character)
+
+    for enemy in enemies_list:
+        turn.append(enemy)
+
     for character in characters:
         character.draw(window)
 

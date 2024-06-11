@@ -79,12 +79,14 @@ def selection(characters, window, background_selection, clock, fps):
                     x = main_x_down - delta_x
                     y = lower_shift - delta_y
                 if event.key == pygame.K_RIGHT:
-                    if(x < 615):
+                    if (x < 608 and y == 25) or (x < 483 and y == 355.72):
                         x += 250
                 if event.key == pygame.K_LEFT:
-                    if(x > 115):
+                    if (x > 115 and y == 25) or (x > 233 and y == 355.72):
                         x -= 250
                 if event.key == pygame.K_z:
-                    characters.add(Rogue())
+                    for character, position in characters_position.items():
+                        if (x + delta_x == position[0] and y + delta_y == position[1]):
+                            characters.add(globals()[character]())
 
     return True
