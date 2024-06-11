@@ -22,6 +22,11 @@ background_selection = pygame.image.load("images/backgrounds/selection_1.png")
 h = background_selection.get_height()
 background_selection = pygame.transform.scale_by(background_selection, LENGHT/h)
 
+#Adjusting the level 1 background
+background_level = pygame.image.load("images/backgrounds/level_1.jpg")
+h = background_level.get_width()
+background_level = pygame.transform.scale_by(background_level, WIDTH/h)
+
 #Creating the main groups
 characters = pygame.sprite.Group()
 
@@ -41,6 +46,6 @@ while run:
     if run == 1:
         run = selection(characters, window, background_selection, clock, fps)
         if run:
-            run = level_1(characters, enemies, window, background_selection, clock, fps)
+            run = level_1(characters, enemies, window, background_level, clock, fps)
 
 pygame.quit()

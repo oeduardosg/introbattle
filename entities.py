@@ -2,6 +2,9 @@
 
 import pygame
 
+CHARACTER_SCALE = 0.6
+SPIDER_SCALE = 0.45
+
 class Entity(pygame.sprite.Sprite):
     """ 
     Properties:
@@ -89,6 +92,7 @@ class Paladin(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/wigfrid/wigfrid_base.webp")
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(150, 20, 50, 25, image)
         self.counter = 0
 
@@ -106,6 +110,7 @@ class Rogue(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/wx78/wx78_base.png")
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(125, 25, 25, 50, image)
 
     def special(self, enemy):
@@ -124,6 +129,7 @@ class Cleric(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/wormwood/wormwood_base.webp")
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(125, 10, 35, 25, image)
 
     def special(self, ally):
@@ -137,6 +143,7 @@ class Wizard(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/wickerbottom/wickerbottom_base.webp")
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(100, 15, 25, 35, image)
 
     def special(self, enemies):
@@ -151,6 +158,7 @@ class Hunter(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/willow/willow_base.webp")
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(115, 20, 15, 50, image)
 
     def special(self, enemie):
@@ -163,6 +171,7 @@ class Spider(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/spider/spider_base.webp")
+        image = pygame.transform.scale_by(image, SPIDER_SCALE)
         super().__init__(50, 15, 10, 30, image)
 
     def special(self, enemy):
@@ -176,10 +185,12 @@ class Necromancer(Entity):
 
     def __init__(self):
         image = pygame.image.load(f"images/entities/maxwell/maxwell_base.webp")
+        image = pygame.transform.scale_by(image, CHARACTER_SCALE)
         super().__init__(250, 20, 20, 30, image)
 
     def special(self, allies):
         if(len(allies.sprites()) == 1):
-           allies.add(Spider())
+            allies.add(Spider())
+            return 1
         else:
             return 0
