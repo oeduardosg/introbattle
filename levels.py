@@ -4,6 +4,14 @@ from entities import *
 WIDTH = 1024
 LENGHT = 768
 
+def order_turns(turns_list):
+    for i in range(0, len(turns_list)):
+        for j in range(0, len(turns_list)):
+            if(turns_list[i].get_spd() > turns_list[j].get_spd()):
+                aux = turns_list[i]
+                turns_list[i] = turns_list[j]
+                turns_list[j] = aux
+
 def level_1(characters, enemies, window, background_level, clock, fps):
 
     window.blit(background_level, ((WIDTH - background_level.get_width()) / 2,0))
@@ -30,6 +38,8 @@ def level_1(characters, enemies, window, background_level, clock, fps):
 
     for enemy in enemies:
         enemy.draw(window)
+
+    order_turns(turn)
 
     clock.tick(fps)
     pygame.display.flip()
