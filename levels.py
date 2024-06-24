@@ -44,8 +44,22 @@ def level_1(characters, enemies, window, background_level, clock, fps):
     clock.tick(fps)
     pygame.display.flip()
 
+    entity_turn = 0
+
     while True:
         for event in pygame.event.get():
+
+            if turn[entity_turn].get_team():
+
+                selected_enemy = 1
+                enemies_list[selected_enemy - 1].info(window)
+                pygame.display.flip()
+
+                if event.type == pygame.KEYDOWN:
+
+                    if event.key == pygame.K_DOWN:
+                        selected_enemy = selected_enemy%2 + 1
+                        
             if event.type == pygame.QUIT:
                 return False
             if event.type == pygame.KEYDOWN:
