@@ -51,6 +51,9 @@ class Entity(pygame.sprite.Sprite):
     
     def get_team(self):
         return self.team
+    
+    def get_class_name(self):
+        return self.__class__.__name__
 
     #Setters
 
@@ -91,10 +94,17 @@ class Entity(pygame.sprite.Sprite):
         window.blit(self.image, [self.x, self.y])
 
     def info(self, window):
-        font = pygame.font.Font(None, 20)
-        text = font.render(f"{self.get_hp_current}/{self.get_hp_max}", True, (255, 255, 255))
-        window.blit(text, [self.x - 300, self.y])
+        font = pygame.font.Font(None, 25)
+        text = font.render(f"{self.get_hp_current()}/{self.get_hp_max()}", True, (255, 255, 255))
+        window.blit(text, [self.x, self.y])
 
+        font = pygame.font.Font(None, 50)
+        text = font.render(f"You are selecting {self.get_class_name()}", True, (255, 255, 255))
+        window.blit(text, [100, 650])
+
+        font = pygame.font.Font(None, 25)
+        text = font.render(f"Press A to attack", True, (255, 255, 255))
+        window.blit(text, [100, 700])
 
 #Wigfrid
 class Wigfrid(Entity):
