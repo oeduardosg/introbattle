@@ -54,6 +54,9 @@ class Entity(pygame.sprite.Sprite):
     
     def get_class_name(self):
         return self.__class__.__name__
+    
+    def alive(self):
+        return self.hp_current > 0
 
     #Setters
 
@@ -85,7 +88,9 @@ class Entity(pygame.sprite.Sprite):
         self.hp_current += restore
 
     def receive_atk(self, attack):
-        self.hp_current -= attack
+        if self.hp_current - attack <= 0:
+            self.die()
+        else: self.hp_current -= attack
 
     def attack(self, enemy):
         enemy.receive_atk(self.get_atk())
@@ -93,18 +98,19 @@ class Entity(pygame.sprite.Sprite):
     def draw(self, window):
         window.blit(self.image, [self.x, self.y])
 
-    def info(self, window):
-        font = pygame.font.Font(None, 25)
-        text = font.render(f"{self.get_hp_current()}/{self.get_hp_max()}", True, (255, 255, 255))
-        window.blit(text, [self.x, self.y])
-
+    def attack_info(self, window):
         font = pygame.font.Font(None, 50)
         text = font.render(f"You are selecting {self.get_class_name()}", True, (255, 255, 255))
         window.blit(text, [100, 650])
 
         font = pygame.font.Font(None, 25)
-        text = font.render(f"Press A to attack", True, (255, 255, 255))
+        text = font.render(f"Press Z to attack!", True, (255, 255, 255))
         window.blit(text, [100, 700])
+
+    def health_info(self, window):
+        font = pygame.font.Font(None, 25)
+        text = font.render(f"{self.get_hp_current()}/{self.get_hp_max()}", True, (255, 255, 255))
+        window.blit(text, [self.x, self.y])
 
 #Wigfrid
 class Wigfrid(Entity):

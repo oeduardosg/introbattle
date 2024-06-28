@@ -1,4 +1,5 @@
 import pygame
+from random import randint
 from entities import *
 
 WIDTH = 1024
@@ -9,9 +10,11 @@ def mega_blit(window, background, characters, enemies):
 
     for character in characters:
         character.draw(window)
+        character.health_info(window)
 
     for enemy in enemies:
         enemy.draw(window)
+        enemy.health_info(window)
 
 def order_turns(turns_list):
     for i in range(0, len(turns_list)):
@@ -56,24 +59,28 @@ def level_1(characters, enemies, window, background_level, clock, fps):
                 if event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_DOWN:
-                        selected_enemy = selected_enemy%2 + 1
+                        selected_enemy = selected_enemy%len(enemies_list) + 1
                         mega_blit(window, background_level, characters, enemies)
-                        enemies_list[selected_enemy - 1].info(window)
+                        enemies_list[selected_enemy - 1].attack_info(window)
 
                     if event.key == pygame.K_UP:
-                        selected_enemy = selected_enemy%2 - 1
+                        selected_enemy = selected_enemy%len(enemies_list) - 1
                         mega_blit(window, background_level, characters, enemies)
-                        enemies_list[selected_enemy - 1].info(window)
-                        
+                        enemies_list[selected_enemy - 1].attack_info(window)
+                        if not(enemies_list[selected_enemy - 1].alive()):
+                            del enemies_list[selected_enemy - 1]
+                            print("An enemy was removed from the list!")
+
                     if event.key == pygame.K_z:
-                        #if event.key == pygame.K_x:
-                            #go back
+                        if event.key == pygame.K_x:
+                            continue
                         turn[entity_turn - 1].attack(enemies_list[selected_enemy - 1])
-                        entity_turn = entity_turn%5 + 1
+                        entity_turn = entity_turn%len(turn) + 1
                         selected_enemy = 1
             
             else:
-                entity_turn = entity_turn%5 + 1
+                turn[entity_turn - 1].attack(characters_list[randint(0, 2)])
+                entity_turn = entity_turn%len(turn) + 1
 
             if event.type == pygame.QUIT:
                 return False
