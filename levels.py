@@ -54,33 +54,50 @@ def level_1(characters, enemies, window, background_level, clock, fps):
 
     while True:
         for event in pygame.event.get():
+
             if turn[entity_turn - 1].get_team():
 
                 if event.type == pygame.KEYDOWN:
 
+                    mega_blit(window, background_level, characters, enemies)
+                    enemies_list[selected_enemy - 1].attack_info(window)
+
                     if event.key == pygame.K_DOWN:
                         selected_enemy = selected_enemy%len(enemies_list) + 1
+                        print(selected_enemy)
                         mega_blit(window, background_level, characters, enemies)
                         enemies_list[selected_enemy - 1].attack_info(window)
 
                     if event.key == pygame.K_UP:
                         selected_enemy = selected_enemy%len(enemies_list) - 1
+                        print(selected_enemy)
+                        if(selected_enemy < 0):
+                            selected_enemy = 1
+
                         mega_blit(window, background_level, characters, enemies)
                         enemies_list[selected_enemy - 1].attack_info(window)
-                        if not(enemies_list[selected_enemy - 1].alive()):
-                            del enemies_list[selected_enemy - 1]
-                            print("An enemy was removed from the list!")
 
                     if event.key == pygame.K_z:
                         if event.key == pygame.K_x:
                             continue
+
                         turn[entity_turn - 1].attack(enemies_list[selected_enemy - 1])
                         entity_turn = entity_turn%len(turn) + 1
                         selected_enemy = 1
-            
+
+                        if not(enemies_list[selected_enemy - 1].alive()):
+
+                            enemies_list.pop(selected_enemy - 1)
+                            print("An enemy was removed from the list!")
+
+                            if len(enemies_list) == 0:
+                                print("You won!")
+                                return
+                            
             else:
-                turn[entity_turn - 1].attack(characters_list[randint(0, 2)])
-                entity_turn = entity_turn%len(turn) + 1
+                if(turn[entity_turn - 1].alive):
+                    turn[entity_turn - 1].attack(characters_list[randint(0, 2)])
+                    entity_turn = entity_turn%len(turn) + 1
 
             if event.type == pygame.QUIT:
                 return False

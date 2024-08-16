@@ -60,6 +60,7 @@ def selection(characters, window, background_selection, clock, fps):
 
     x = 108
     y = 25
+    count = 0
     
     main_x_up = 150
     main_x_down = 275
