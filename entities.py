@@ -27,6 +27,7 @@ class Entity(pygame.sprite.Sprite):
         self.atk = atk
         self.dfn = dfn
         self.spd = spd
+        self.cooldown = 5
         self.x = 0
         self.y = 0
         self.image = image
@@ -82,6 +83,9 @@ class Entity(pygame.sprite.Sprite):
     def team(self, team):
         self.team = team
 
+    def reset_cooldown(self):
+        self.cooldown = 5
+
     #Others
 
     def restore_hp(self, restore):
@@ -111,6 +115,13 @@ class Entity(pygame.sprite.Sprite):
         font = pygame.font.Font(None, 25)
         text = font.render(f"{self.get_hp_current()}/{self.get_hp_max()}", True, (255, 255, 255))
         window.blit(text, [self.x, self.y])
+
+    def decrease_cooldown(self):
+        if(self.cooldown != 0):
+            self.cooldown -= 1
+
+    def active_special(self):
+        return self.cooldown == 0
 
 #Wigfrid
 class Wigfrid(Entity):
@@ -217,8 +228,8 @@ class Maxwell(Entity):
         super().__init__(250, 20, 20, 30, image, 0)
 
     def special(self, allies):
-        if(len(allies.sprites()) == 1):
-            allies.add(Spider())
+        if(len(allies) == 1):
+            allies.inset(Spider())
             return 1
         else:
             return 0

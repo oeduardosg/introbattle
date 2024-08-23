@@ -35,6 +35,7 @@ def menu(window, background_menu, clock, fps):
     run = True
     while run:
 
+        pygame.draw.rect(window, (0, 0, 0), pygame.Rect(0, 0, 1024, 768))
         window.blit(background_menu, (0,0))
 
         font = pygame.font.Font(None, 76)
@@ -46,7 +47,7 @@ def menu(window, background_menu, clock, fps):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                return pygame.quit()
             if event.type == pygame.KEYDOWN:
                 if pygame.K_a:
                     return 1
@@ -102,7 +103,7 @@ def selection(characters, window, background_selection, clock, fps):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                return pygame.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     x = main_x_up - delta_x
@@ -125,3 +126,53 @@ def selection(characters, window, background_selection, clock, fps):
 
 
     return True
+
+def win(window, background_menu, clock, fps):
+
+    run = True
+    while run:
+
+        window.blit(background_menu, (-175,0))
+
+        font = pygame.font.Font(None, 60)
+        text = font.render("You win!", True, (255, 255, 255))
+        window.blit(text, (550, 660))
+
+        font = pygame.font.Font(None, 42)
+        text = font.render("Press A to return to the menu", True, (255, 255, 255))
+        window.blit(text, (550, 710))
+
+        clock.tick(fps)
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if pygame.K_a:
+                    return 1
+                
+def lose(window, background_menu, clock, fps):
+
+    run = True
+    while run:
+
+        window.blit(background_menu, (-175,0))
+
+        font = pygame.font.Font(None, 60)
+        text = font.render("You lose...", True, (255, 255, 255))
+        window.blit(text, (550, 660))
+
+        font = pygame.font.Font(None, 42)
+        text = font.render("Press A to return to the menu", True, (255, 255, 255))
+        window.blit(text, (550, 710))
+
+        clock.tick(fps)
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                if pygame.K_a:
+                    return 1

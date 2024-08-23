@@ -55,6 +55,11 @@ def level_1(characters, enemies, window, background_level, clock, fps):
     while True:
         for event in pygame.event.get():
 
+            if(len(enemies_list) == 0):
+                return 1
+            if(len(characters_list) == 0):
+                return 0
+
             if turn[entity_turn - 1].get_team():
 
                 if event.type == pygame.KEYDOWN:
@@ -89,20 +94,25 @@ def level_1(characters, enemies, window, background_level, clock, fps):
 
                             enemies_list.pop(selected_enemy - 1)
                             print("An enemy was removed from the list!")
-
-                            if len(enemies_list) == 0:
-                                print("You won!")
-                                return
+                            print(len(enemies_list))
                             
             else:
                 if(turn[entity_turn - 1].alive):
-                    turn[entity_turn - 1].attack(characters_list[randint(0, 2)])
+                    if turn[entity_turn - 1].active_special():
+                        turn[entity_turn - 1].special(enemies_list)
+                        turn[entity_turn - 1].reset_cooldown()
+                    else:
+                        turn[entity_turn - 1].decrease_cooldown()
+                    num = randint(0, 2)
+                    while num:
+                        if characters_list[num].alive:
+                            turn[entity_turn - 1].attack(characters_list[num])
+                            break
+                        else:
+                            num = randint(0, 2)
                     entity_turn = entity_turn%len(turn) + 1
 
             if event.type == pygame.QUIT:
-                return False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_a:
-                    return 1
+                pygame.quit()
         
         pygame.display.flip()
