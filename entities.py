@@ -221,7 +221,7 @@ class Entity(pygame.sprite.Sprite):
                 self.turn_info(window)
 
             else:
-                self.special(self, enemies, characters, window=window)
+                self.special(characters, enemies, window=window)
                 return
 
 
@@ -346,10 +346,11 @@ class Wormwood(Entity):
         super().__init__(125, 10, 35, 25, image, 1)
 
     def special(self, allies = None, enemies = None, ally = None, enemy = None, window = None):
+        print(allies)
         rand = randint(0, 2)
         while not(allies[rand].alive()):
             rand = randint(0, 2)
-        allies[rand].restore_hp
+        allies[rand].restore_hp(30)
 
     def health_info(self, window):
         font = pygame.font.Font(None, 25)
