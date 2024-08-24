@@ -43,15 +43,26 @@ def level_1(characters, enemies, window, background_level, clock, fps):
     while True:
         for event in pygame.event.get():
 
-            if(len(enemies_list) == 0):
-                return 1
-            if(len(characters_list) == 0):
-                return 0
+            characters_win = 1
+            enemies_win = 1
+
+            for entity in turn:
+                if entity.alive():
+                    if entity.get_team():
+                        enemies_win = 0
+                    else:
+                        characters_win = 0
+
+            if characters_win: return 1
+            if enemies_win: return 0
 
             turn[entity_turn - 1].action(window, background_level, characters_list, enemies_list)
             entity_turn += 1
             if entity_turn > len(turn):
                 entity_turn = 1
+                
+            for entity in turn:
+                entity.decrease_cooldown()
 
             if event.type == pygame.QUIT:
                 pygame.quit()
