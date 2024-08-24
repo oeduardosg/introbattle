@@ -5,6 +5,22 @@ import pygame
 CHARACTER_SCALE = 0.6
 SPIDER_SCALE = 0.45
 
+WIDTH = 1024
+LENGHT = 768
+
+def mega_blit(window, background, characters, enemies):
+    window.blit(background, ((WIDTH - background.get_width()) / 2,0))
+
+    for character in characters:
+        character.draw(window)
+        character.health_info(window)
+
+    for enemy in enemies:
+        enemy.draw(window)
+        enemy.health_info(window)
+
+    pygame.draw.rect(window, (255, 255, 255), pygame.Rect(0, 575, 1024, 768))
+                     
 class Entity(pygame.sprite.Sprite):
     """ 
     Properties:
@@ -103,18 +119,19 @@ class Entity(pygame.sprite.Sprite):
         window.blit(self.image, [self.x, self.y])
 
     def attack_info(self, window):
+        print("im here")
         font = pygame.font.Font(None, 50)
-        text = font.render(f"You are selecting {self.get_class_name()}", True, (255, 255, 255))
+        text = font.render(f"You are selecting {self.get_class_name()}", True, (0, 0, 0))
         window.blit(text, [100, 650])
 
         font = pygame.font.Font(None, 25)
-        text = font.render(f"Press Z to attack!", True, (255, 255, 255))
+        text = font.render(f"Press Z to attack!", True, (0, 0, 0))
         window.blit(text, [100, 700])
 
     def health_info(self, window):
         font = pygame.font.Font(None, 25)
         text = font.render(f"{self.get_hp_current()}/{self.get_hp_max()}", True, (255, 255, 255))
-        window.blit(text, [self.x, self.y])
+        window.blit(text, [self.x + 60, self.y + 210])
 
     def decrease_cooldown(self):
         if(self.cooldown != 0):
@@ -122,6 +139,88 @@ class Entity(pygame.sprite.Sprite):
 
     def active_special(self):
         return self.cooldown == 0
+    
+    def turn_info(self, window):
+        font = pygame.font.Font(None, 50)
+        text = font.render(f"{self.get_class_name()}'s turn:", True, (0, 0, 0))
+        window.blit(text, [100, 600])
+    
+    def action(self, window, background, characters, enemies):
+
+        selected_option = 0
+        selected_enemy = 0
+
+        while True:
+            for event in pygame.event.get():
+
+                if event.type == pygame.KEYDOWN:
+
+                    mega_blit(window, background, characters, enemies)
+                    font = pygame.font.Font(None, 50)
+                    text = font.render("Attack", True, (0, 0, 0))
+                    window.blit(text, [100, 600])
+                    text = font.render("Defend", True, (0, 0, 0))
+                    window.blit(text, [300, 600])
+                    text = font.render("Special", True, (0, 0, 0))
+                    window.blit(text, [100, 650])
+
+
+                    if selected_option == 0:
+                        font = pygame.font.Font(None, 50)
+                        text = font.render("Attack", True, (255, 0, 0))
+                        window.blit(text, [100, 600])
+
+                        if event.key == pygame.K_z:
+
+                            while True:
+                                for event in pygame.event.get():
+
+                                    if event.type == pygame.KEYDOWN:
+                                        mega_blit(window, background, characters, enemies)
+                                        enemies[selected_enemy].attack_info(window)
+                                        self.turn_info(window)
+
+                                        if event.key == pygame.K_DOWN:
+                                            selected_enemy += 1
+                                            if(selected_enemy > 1): selected_enemy = 0
+                                            mega_blit(window, background, characters, enemies)
+                                            enemies[selected_enemy].attack_info(window)
+                                            self.turn_info(window)
+
+                                        if event.key == pygame.K_UP:
+                                            selected_enemy -= 1
+                                            if(selected_enemy < 0): selected_enemy = 1
+                                            mega_blit(window, background, characters, enemies)
+                                            enemies[selected_enemy].attack_info(window)
+                                            self.turn_info(window)
+
+                                        if event.key == pygame.K_z:
+                                            self.attack(enemies[selected_enemy])
+                                            return
+                            
+                    if selected_option == 1:
+                        font = pygame.font.Font(None, 50)
+                        text = font.render("Defend", True, (255, 0, 0))
+                        window.blit(text, [300, 600])
+
+                    if selected_option == 2:
+                        font = pygame.font.Font(None, 50)
+                        text = font.render("Special", True, (255, 0, 0))
+                        window.blit(text, [100, 650])
+
+                    if event.key == pygame.K_DOWN:
+                        selected_option += 1
+                        if selected_option > 2: selected_option = 0
+
+                    if event.key == pygame.K_UP:
+                        selected_option -= 1
+                        if selected_option < 0: selected_option = 2
+
+                if event.type == pygame.QUIT:
+                        pygame.quit()
+
+            pygame.display.flip()
+
 
 #Wigfrid
 class Wigfrid(Entity):
@@ -217,6 +316,9 @@ class Spider(Entity):
         enemy
         #Não consegue jogar por um turno
 
+    def action(self, window, background, characters, enemies):
+        print("next")
+
 #Maxwell
 class Maxwell(Entity):
     """
@@ -233,3 +335,6 @@ class Maxwell(Entity):
             return 1
         else:
             return 0
+        
+    def action(self, window, background, characters, enemies):
+        print("next")
