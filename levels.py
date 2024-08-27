@@ -63,6 +63,8 @@ def level_1(characters, enemies, window, background_level, clock, fps):
                 
             for entity in turn:
                 entity.decrease_cooldown()
+                if entity.is_on_fire():
+                    entity.receive_atk(10)
 
             if event.type == pygame.QUIT:
                 pygame.quit()

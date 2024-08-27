@@ -76,11 +76,17 @@ class Entity(pygame.sprite.Sprite):
     def get_class_name(self):
         return self.__class__.__name__
     
+    def get_cooldown(self):
+        return self.cooldown
+    
     def alive(self):
         return self.hp_current > 0
     
     def resisting(self):
         return self.resist
+
+    def is_on_fire(self):
+        return self.onfire
 
     #Setters
 
@@ -122,6 +128,8 @@ class Entity(pygame.sprite.Sprite):
 
     def restore_hp(self, restore):
         self.hp_current += restore
+        if self.hp_current > self.hp_max:
+            self.hp_current = self.hp_max
 
     def receive_atk(self, attack):
         if self.resisting():
@@ -144,7 +152,7 @@ class Entity(pygame.sprite.Sprite):
         if self.onfire:
             image = pygame.image.load(f"images/entities/effects/fire.webp")
             image = pygame.transform.scale_by(image, 0.3)
-            window.blit(image, [self.x + 30, self.y + 90])
+            window.blit(image, [self.x + 30, self.y + 10])
 
     def attack_info(self, window):
         font = pygame.font.Font(None, 50)
@@ -197,7 +205,7 @@ class Entity(pygame.sprite.Sprite):
                 window.blit(text, [550, 600])
                 text = font.render("Defend", True, (0, 0, 0))
                 window.blit(text, [750, 600])
-                text = font.render("Special", True, (0, 0, 0))
+                text = font.render(f"Special ({(self.get_cooldown()/5):.0f} turn(s) left)", True, (0, 0, 0))
                 window.blit(text, [550, 650])
 
                 if selected_option == 0:
@@ -211,9 +219,12 @@ class Entity(pygame.sprite.Sprite):
                     window.blit(text, [750, 600])
 
                 if selected_option == 2:
-                    font = pygame.font.Font(None, 50)
-                    text = font.render("Special", True, (255, 0, 0))
-                    window.blit(text, [550, 650])
+                    if not(self.active_special()):
+                        selected_option = 0
+                    else:
+                        font = pygame.font.Font(None, 50)
+                        text = font.render("Special", True, (255, 0, 0))
+                        window.blit(text, [550, 650])
 
             elif screen == 1:
                 mega_blit(window, background, characters, enemies)
@@ -258,6 +269,8 @@ class Entity(pygame.sprite.Sprite):
                                 return
 
                         if selected_option == 2:
+                            if not(self.active_special):
+                                selected_option = 0
                             if event.key == pygame.K_z:
                                 screen = 2
 
@@ -311,6 +324,11 @@ class Wigfrid(Entity):
         else:
             enemy.receive_atk(self.get_atk())
 
+    def special(self, allies = None, enemies = None, ally = None, enemy = None, window = None):
+        audio = pygame.mixer.Sound("images/wigfrid_sound.mp3")
+        audio.play()
+        self.reset_cooldown()
+
 #WX-78
 class WX78(Entity):
     """
@@ -334,6 +352,8 @@ class WX78(Entity):
             self.restore_hp(self.get_atk())
             self.attack(enemies[rand])
 
+        self.reset_cooldown()
+
 #Wormwood
 class Wormwood(Entity):
     """
@@ -351,6 +371,7 @@ class Wormwood(Entity):
         while not(allies[rand].alive()):
             rand = randint(0, 2)
         allies[rand].restore_hp(30)
+        self.reset_cooldown()
 
     def health_info(self, window):
         font = pygame.font.Font(None, 25)
@@ -374,6 +395,7 @@ class Wickerbottom(Entity):
             image = pygame.transform.scale_by(image, 1)
             window.blit(image, [enemy.x - 20, enemy.y - 200])
             enemy.receive_atk(self.get_atk())
+        self.reset_cooldown()
 
 #Willow
 class Willow(Entity):
@@ -390,7 +412,8 @@ class Willow(Entity):
         rand = randint(0, 1)
         while not(enemies[rand].alive):
             rand = randint(0, 1)
-        enemies[rand].onfire = 5
+        enemies[rand].onfire = 10
+        self.reset_cooldown()
 
 #Spider
 class Spider(Entity):
