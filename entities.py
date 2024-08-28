@@ -20,7 +20,7 @@ def mega_blit(window, background, characters, enemies):
         enemy.draw(window)
         enemy.health_info(window)
 
-    pygame.draw.rect(window, (128, 128, 128), pygame.Rect(0, 575, 1024, 768))
+    pygame.draw.rect(window, (75, 54, 33), pygame.Rect(0, 575, 1024, 768))
                      
 class Entity(pygame.sprite.Sprite):
     """ 
@@ -156,11 +156,11 @@ class Entity(pygame.sprite.Sprite):
 
     def attack_info(self, window):
         font = pygame.font.Font(None, 50)
-        text = font.render(f"You are selecting {self.get_class_name()}", True, (0, 0, 0))
+        text = font.render(f"You are selecting {self.get_class_name()}", True, (255, 255, 255))
         window.blit(text, [100, 650])
 
         font = pygame.font.Font(None, 25)
-        text = font.render(f"Press Z to attack!", True, (0, 0, 0))
+        text = font.render(f"Press Z to attack!", True, (255, 255, 255))
         window.blit(text, [100, 700])
 
     def health_info(self, window):
@@ -183,7 +183,7 @@ class Entity(pygame.sprite.Sprite):
     
     def turn_info(self, window):
         font = pygame.font.Font(None, 50)
-        text = font.render(f"{self.get_class_name()}'s turn:", True, (0, 0, 0))
+        text = font.render(f"{self.get_class_name()}'s turn:", True, (255, 255, 255))
         window.blit(text, [100, 600])
     
     def action(self, window, background, characters, enemies):
@@ -201,11 +201,11 @@ class Entity(pygame.sprite.Sprite):
                 mega_blit(window, background, characters, enemies)
                 self.turn_info(window)
                 font = pygame.font.Font(None, 50)
-                text = font.render("Attack", True, (0, 0, 0))
+                text = font.render("Attack", True, (255, 255, 255))
                 window.blit(text, [550, 600])
-                text = font.render("Defend", True, (0, 0, 0))
+                text = font.render("Defend", True, (255, 255, 255))
                 window.blit(text, [750, 600])
-                text = font.render(f"Special ({(self.get_cooldown()/5):.0f} turn(s) left)", True, (0, 0, 0))
+                text = font.render(f"Special ({(self.get_cooldown()/5):.0f} turn(s) left)", True, (255, 255, 255))
                 window.blit(text, [550, 650])
 
                 if selected_option == 0:
@@ -366,7 +366,6 @@ class Wormwood(Entity):
         super().__init__(125, 10, 35, 25, image, 1)
 
     def special(self, allies = None, enemies = None, ally = None, enemy = None, window = None):
-        print(allies)
         rand = randint(0, 2)
         while not(allies[rand].alive()):
             rand = randint(0, 2)
@@ -427,12 +426,9 @@ class Spider(Entity):
 
     def special(self, allies = None, enemies = None, ally = None, enemy = None, window = None):
         enemy.web()
-        print(enemy)
-        print("Should have been webbed")
         self.reset_cooldown()
 
     def action(self, window, background, characters, enemies):
-        print(f"Spider cooldown {self.cooldown}")
         if self.active_special():
             rand = randint(0, 2)
             while not(characters[rand].alive):
@@ -465,7 +461,9 @@ class Maxwell(Entity):
             image = pygame.transform.scale_by(image, 0.8)
             window.blit(image, [ally.x + 50, ally.y + 40])
             ally.restore_all_hp()
-            self.reset_cooldown()
+        else:
+            self.restore_hp(int(self.hp_current/4))
+        self.reset_cooldown()
         
     def action(self, window, background, characters, enemies):
         if self.active_special():
@@ -475,3 +473,6 @@ class Maxwell(Entity):
             while not(characters[rand].alive):
                 rand = randint(0, 2)
             self.attack(characters[rand])
+            image = pygame.image.load(f"images/entities/effects/dark_hand.webp")
+            image = pygame.transform.scale_by(image, 0.2)
+            window.blit(image, [characters[rand].x, characters[rand].y + 30])

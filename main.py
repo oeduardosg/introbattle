@@ -37,6 +37,10 @@ background_lose = pygame.image.load("images/backgrounds/lose.webp")
 h = background_lose.get_height()
 background_lose = pygame.transform.scale_by(background_lose, LENGHT/h)
 
+#Setting the song
+audio = pygame.mixer.Sound("images/main_theme.mp3")
+audio.play()
+
 #Creating the main groups
 characters = pygame.sprite.Group()
 
